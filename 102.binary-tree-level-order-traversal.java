@@ -1,8 +1,7 @@
-
 /*
- * @lc app=leetcode id=145 lang=java
+ * @lc app=leetcode id=102 lang=java
  *
- * [145] Binary Tree Postorder Traversal
+ * [102] Binary Tree Level Order Traversal
  */
 
 // @lc code=start
@@ -22,16 +21,33 @@
  * }
  */
 class Solution {
-    public void postorder(TreeNode root, List<Integer> result) {
-        if(root == null) return;
-        postorder(root.left, result);
-        postorder(root.right, result);
-        result.add(root.val);
-    }
-    public List<Integer> postorderTraversal(TreeNode root) {
-        List<Integer> result = new ArrayList<Integer>();
-        postorder(root, result);
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if(root == null) return result;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        queue.add(null);
+
+        List<Integer> currLevel = new ArrayList<>();
+
+        while(!queue.isEmpty()) {
+            TreeNode currNode = queue.remove();
+            if(currNode == null) {
+                result.add(new ArrayList<>(currLevel));
+                currLevel.clear();
+                if(!queue.isEmpty()){
+                    queue.add(null);
+                }
+            } else {
+                currLevel.add(currNode.val);
+
+                if(currNode.left != null) queue.add(currNode.left);
+                if(currNode.right != null) queue.add(currNode.right);
+            }
+        }
         return result;
     }
 }
 // @lc code=end
+
