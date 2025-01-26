@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool isAllZero(vector<int>& counter) {
+        for(int i=0; i<counter.size(); i++) {
+            if(counter[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    vector<int> findAnagrams(string s, string p) {
+        int n = s.length();
+        int k = p.length();
+        vector<int> counter(26, 0);
+        
+        for(int i=0; i<k; i++) {
+            char ch = p[i];
+            counter[ch - 'a']++;
+        }
+
+        int i = 0;
+        int j = 0;
+        vector<int> result;
+        while(j < n) {
+            counter[s[j] - 'a']--;
+            if(j-i+1 == k) {
+                if(isAllZero(counter)) {
+                    result.push_back(i);
+                }
+                counter[s[i] - 'a']++;
+                i++;
+            }
+            j++;
+        }
+        return result;
+    }
+};
